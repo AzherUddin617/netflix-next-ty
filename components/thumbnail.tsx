@@ -1,6 +1,9 @@
 import Image from "next/image"
 import { Movie } from "../typings"
 
+import { useRecoilState } from 'recoil'
+import { modalState, movieState } from '../atoms/modalAtom'
+
 interface Props {
     // when using firebase
     // movie: Movie | DocumentData;
@@ -10,6 +13,9 @@ interface Props {
 const Thumbnail = ({
     movie
 }: Props) => {
+  const [currentMovie, setCurrentMovie] = useRecoilState(movieState);
+  const [showModal, setShowModal] = useRecoilState(modalState);
+
   return (
     <div className="relative h-28 min-w-[180px] cursor-pointer transition duration-200 ease-out md:h-36 md:min-w-[260px] md:hover:scale-105">
         <Image
@@ -18,6 +24,11 @@ const Thumbnail = ({
             }`}
             className="rounded-sm object-cover md:rounded"
             layout="fill"
+            alt={movie.title}
+            onClick={() => {
+                setCurrentMovie(movie);
+                setShowModal(true);
+            }}
         />
     </div>
   )

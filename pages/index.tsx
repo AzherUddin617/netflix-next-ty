@@ -1,9 +1,14 @@
 import Head from 'next/head'
 import Image from 'next/image'
-import Banner from '../components/banner'
+import { useState } from 'react';
+import { useRecoilValue } from 'recoil';
+import { modalState } from '../atoms/modalAtom';
 
+import Banner from '../components/banner'
 import Header from '../components/header';
+import Modal from '../components/modal';
 import Row from '../components/row';
+import useAuth from '../hooks/useAuth';
 import { Movie } from '../typings';
 import requests from '../utils/request';
 
@@ -28,6 +33,11 @@ const Home = ({
   romanceMovies,
   documentaries
  }: Props) => {
+  const { loading } = useAuth();
+  // const [showModal, setShowModal] = useState(false);
+  const showModal = useRecoilValue(modalState);
+
+  if (loading) return null;
 
   return (
     <div className="relative h-screen bg-gradient-to-b">
@@ -53,6 +63,7 @@ const Home = ({
         </section>
       </main>
       {/* Modal */}
+      {showModal && <Modal />}
     </div>
   )
 }
